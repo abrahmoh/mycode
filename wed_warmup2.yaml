@@ -3,8 +3,8 @@
   hosts: Redfish
   connection: local
   gather_facts: false
-
-  tasks:
+  
+  tasks:  
   - name: Get CPU model
     community.general.redfish_info:
       category: Systems
@@ -14,24 +14,12 @@
       password: "{{ password }}"
     register: cpuinventory
 
-  - name: bonus
-    debug:
-      var: cpuinventory
-
-  - name: rocket scientist bonus
-    debug:
-      var: cpuinventory.redfish_facts.cpu.entries.0.1.0.Model
-
   - name: Restart system power gracefully
     community.general.redfish_command:
       category: Systems
-      command: PowerGracefulRestart
-      resource_id: 437XR1138R2
+      command: PowerForceOff
+      resource_id: BMC
       baseuri: "{{ baseuri }}"
       username: "{{ username }}"
       password: "{{ password }}"
-    register: powerresult
-
-  - name: bonus
-    debug:
-      var: powerresult
+    register: resultpower
